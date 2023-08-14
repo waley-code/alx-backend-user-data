@@ -51,3 +51,17 @@ class DB:
             raise e  # Raising the InvalidRequestError as it is
         except NoResultFound:
             raise NoResultFound("No user found with the specified filters.")
+
+    def update_user(self, user_id: int, **kwargs):
+        """Update a user's attributes based on user_id and keyword arguments
+        """
+        try:
+            user = self.find_user_by(id=user_id)
+            for attr, value in kwargs.items():
+                if hasattr(user, attr):
+                    setattr(user, attr, value)
+                else:
+                    raise ValueError(f"Invalid attribute '{attr}' provided.")                                                                                                           
+            self._session.commit()
+        except NoResultFound:
+            raise NoResultFound(f"No user found with id '{user_id}'.")
