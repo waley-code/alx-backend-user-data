@@ -39,7 +39,7 @@ class DB:
         self._session.commit()
         return new_user
 
-    def find_user_by(self, **kwargs):
+    def find_user_by(self, **kwargs) -> User:
         """Find a user by filtering with keyword arguments
         """
         try:
@@ -53,7 +53,7 @@ class DB:
         except NoResultFound:
             raise NoResultFound("No user found with the specified filters.")
 
-    def update_user(self, user_id: int, **kwargs):
+    def update_user(self, user_id: int, **kwargs) -> None:
         """Update a user's attributes based on user_id and keyword arguments
         """
         try:
