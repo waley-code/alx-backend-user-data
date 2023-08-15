@@ -12,7 +12,9 @@ app = Flask(__name__)
 def home():
     return jsonify({"message": "Bienvenue"})
 
+
 AUTH = Auth()
+
 
 @app.route("/users", methods=["POST"])
 def register_user():
@@ -25,6 +27,7 @@ def register_user():
 
     except ValueError as e:
         return jsonify({"message": "email already registered"}), 400
+
 
 if __name__ == "__main__":
     app.run(host="0.0.0.0", port=5000)

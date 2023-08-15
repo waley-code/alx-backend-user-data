@@ -45,7 +45,8 @@ class DB:
         try:
             user = self._session.query(User).filter_by(**kwargs).first()
             if user is None:
-                raise NoResultFound("No user found with the specified filters.")
+                raise NoResultFound(
+                        "No user found with the specified filters.")
             return user
         except InvalidRequestError as e:
             raise e  # Raising the InvalidRequestError as it is
@@ -61,7 +62,7 @@ class DB:
                 if hasattr(user, attr):
                     setattr(user, attr, value)
                 else:
-                    raise ValueError(f"Invalid attribute '{attr}' provided.")                                                                                                           
+                    raise ValueError(f"Invalid attribute '{attr}' provided.")
             self._session.commit()
         except NoResultFound:
             raise NoResultFound(f"No user found with id '{user_id}'.")
