@@ -6,7 +6,7 @@ import bcrypt
 from sqlalchemy.orm.exc import NoResultFound
 from sqlalchemy.exc import InvalidRequestError
 from db import DB
-
+from user import User
 
 def _hash_password(password: str) -> bytes:
     """Hash a password securely using bcrypt
@@ -23,7 +23,7 @@ class Auth:
     def __init__(self):
         self._db = DB()
 
-    def register_user(self, email: str, password: str):
+    def register_user(self, email: str, password: str) -> User:
         """Register a new user
         """
         try:
