@@ -8,6 +8,7 @@ from sqlalchemy.exc import InvalidRequestError
 from typing import Union
 from db import DB
 from user import User
+import uuid
 
 
 def _generate_uuid() -> str:
@@ -62,7 +63,7 @@ class Auth:
             self._db.update_user(user.id, session_id=session_id)
             return session_id
         except NoResultFound:
-            raise None
+            return None
 
     def get_user_from_session_id(self, session_id: str) -> Union[str, None]:
         """Get user based on session ID
