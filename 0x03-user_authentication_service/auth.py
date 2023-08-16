@@ -62,7 +62,7 @@ class Auth:
             self._db.update_user(user.id, session_id=session_id)
             return session_id
         except NoResultFound:
-            raise NoResultFound(f"No user found with email '{email}'.")
+            raise None
 
     def get_user_from_session_id(self, session_id: str) -> Union[str, None]:
         """Get user based on session ID
