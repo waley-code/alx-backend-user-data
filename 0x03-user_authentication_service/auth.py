@@ -10,6 +10,12 @@ from db import DB
 from user import User
 
 
+def _generate_uuid() -> str:
+    """Generate a new UUID
+    """
+    return str(uuid.uuid4())
+
+
 def _hash_password(password: str) -> bytes:
     """Hash a password securely using bcrypt
     """
@@ -24,11 +30,6 @@ class Auth:
 
     def __init__(self):
         self._db = DB()
-
-    def _generate_uuid() -> str:
-        """Generate a new UUID
-        """
-        return str(uuid.uuid4())
 
     def register_user(self, email: str, password: str) -> User:
         """Register a new user
@@ -57,7 +58,7 @@ class Auth:
         """
         try:
             user = self._db.find_user_by(email=email)
-            session_id = self._generate_uuid()
+            session_id = _generate_uuid()
             self._db.update_user(user.id, session_id=session_id)
             return session_id
         except NoResultFound:
@@ -89,7 +90,7 @@ class Auth:
         """
         try:
             user = self._db.find_user_by(email=email)
-            reset_token = self._generate_uuid()
+            reset_token = _generate_uuid()
             self._db.update_user(user.id, reset_token=reset_token)
             return reset_token
         except NoResultFound:
