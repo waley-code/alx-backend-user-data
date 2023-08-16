@@ -18,7 +18,7 @@ AUTH = Auth()
 
 
 @app.route("/users", methods=["POST"])
-def register_user() -> str:
+def register_user():
     try:
         email = request.form.get("email")
         password = request.form.get("password")
@@ -31,33 +31,35 @@ def register_user() -> str:
 
 
 @app.route("/sessions", methods=["POST"])
-def login() -> str:
+def login():
     email = request.form.get("email")
     password = request.form.get("password")
 
     if AUTH.valid_login(email, password):
         session_id = AUTH.create_session(email)
-        response = make_response(jsonify({"email": email, "message": "logged in"}), 200)
+        response = make_response(
+                    jsonify({"email": email, "message": "logged in"}), 200)
         response.set_cookie("session_id", session_id)
         return response
     else:
         abort(401)
 
+
 @app.route("/sessions", methods=["DELETE"])
-def logout() -> str:
+def logout():
     session_id = request.cookies.get("session_id", None)
     if session_id is None:
         abort(403)
     user = AUTH.get_user_from_session_id(session_id)
-
-   if user:
+    if user:
         AUTH.destroy_session(user.id)
         return redirect("/")
     else:
         abort(403)
 
+
 @app.route("/profile", methods=["GET"])
-def profile() -> str:
+def profile():
     session_id = request.cookies.get("session_id", None)
     if session_id is None:
         abort(403)
@@ -66,10 +68,11 @@ def profile() -> str:
     if user:
         return jsonify({"email": user.email}), 200
     else:
-        abort(401)
+        abort(403)
+
 
 @app.route("/reset_password", methods=['POST'])
-def reset_password() -> str:
+def reset_password():
     """returns email and password reset token"""
     try:
         email = request.form.get("email")
@@ -81,8 +84,9 @@ def reset_password() -> str:
         abort(403)
     return jsonify({"email": email, "reset_token": reset_token}), 200
 
+
 @app.route("/reset_password", methods=["PUT"])
-    def update_password() -> str:
+def update_password():
     try:
         email = request.form.get("email")
         reset_token = request.form.get("reset_token")
